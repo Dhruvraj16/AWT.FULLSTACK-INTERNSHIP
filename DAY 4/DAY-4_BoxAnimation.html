@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+ <html lang="en"> 
+ <head> 
+     <meta charset="UTF-8"> 
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+     <title>Document</title> 
+     <style> 
+         div{ 
+     width: 100px; 
+     height: 100px; 
+     background-color: red; 
+     position: relative; 
+ animation: Demo ; 
+ animation-duration: 5s; 
+ animation-iteration-count: infinite; 
+ } 
+         @keyframes Demo { 
+             0%{background-color: aqua; left:0px; top:0px;transform: rotate(0deg); } 
+             25%{background-color: rgb(240, 26, 19); left: 200px; top:0px;transform: rotate(90deg); } 
+             50%{background-color: rgb(12, 238, 50); left: 200px; top:200px;transform: rotate(180deg); } 
+             75%{background-color: rgb(119, 25, 241); left: 0px; top:200px;transform: rotate(270deg); } 
+             100%{background-color: rgb(223, 238, 10); left: 0px; top:0px;transform: rotate(360deg); } 
+  
+         } 
+     </style> 
+ </head> 
+ <body> 
+     <div></div> 
+  
+ </body> 
+ </html>
