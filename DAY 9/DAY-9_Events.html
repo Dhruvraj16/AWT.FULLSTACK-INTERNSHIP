@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/JavaScript" src="DAY-9_Events.js"></script>
+    <style>
+        button{cursor: pointer;}
+    </style>
+</head>
+<body>
+    <button onclick="demoOnClick()">Click Event</button><br/>
+
+    <button ondblclick="demoOnDb1Click()">Double Click Event</button><br/>
+
+    <b>Focus:</b><br/>
+    <input type="text" placeholder="Focus Event Done" id="txtFocus" onfocus="demoOnFocus()"><br/>
+    <b>Blur:</b><br/>
+    <input type="text" placeholder="Blur Event Done" id="txtBlur" onblur="demoOnBlur()"><br/>
+    <b>Keypress:</b><br/>
+    <input type="text" placeholder="Keypress Event Done"  onkeypress="demoOnKeypress()"><br/>
+    <b>Keyup:</b><br/>
+    <input type="text" placeholder="Keyup Event Done"  onkeyup="demoOnKeyup()" /><br/>
+</body>
+</html>
