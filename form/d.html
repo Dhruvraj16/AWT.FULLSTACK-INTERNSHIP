@@ -1,0 +1,315 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Responsive Form Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .ml {
+            margin-left: 60px;
+        }
+
+        .tfont {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .ffont {
+            background-color: #e3b3ab;
+            border: transparent;
+            border-radius: 5px;
+        }
+        .bg{
+            background-color: #abdbe3;
+        }
+        .h1{
+            height: 150px;
+        }
+        .hed{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #737277;
+            font-size: 50px;
+            text-shadow: 3px 0px #a7a7a0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5 bg" style="border-radius: 15px; box-shadow: 0 8px 10px #a7a7a0;">
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <img src="Images/Sapphire-Software-Solutions-logo-profile-removebg-preview (1).png" alt="Sapphire-Software-Solutions-logo-profile" width="300px" height="150px">
+            </div>
+            <div class="col-md-6 h1">
+                <div class="hed h1">Registration Form</div>
+            </div>
+        </div>
+        <form id="registrationForm">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control ffont" id="firstName" name="firstName" placeholder="Enter First Name"
+                        required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control ffont" id="lastName" name="lastName" placeholder="Enter Last Name"
+                        required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="mobileNumber">Mobile Number</label>
+                    <input type="tel" class="form-control ffont" id="mobileNumber" name="mobileNumber"
+                        placeholder="Enter Mobile Number" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control ffont" id="password" name="password" placeholder="Enter Password"
+                        required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control ffont" id="email" name="email" placeholder="Email" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Gender</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="male" required>
+                    <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gender" id="female" value="female" required>
+                    <label class="form-check-label" for="female">Female</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="country">Country</label>
+                    <select id="country" class="form-control ffont" name="country" required>
+                        <option selected disabled>Select Country</option>
+                        <!-- Add country options here -->
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="state">State</label>
+                    <select id="state" class="form-control ffont" name="state" required disabled>
+                        <option selected disabled>Select State</option>
+                        <!-- State options will be populated dynamically using JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="city">City</label>
+                    <select id="city" class="form-control ffont" name="city" required disabled>
+                        <option selected disabled>Select City</option>
+                        <!-- City options will be populated dynamically using JavaScript -->
+                    </select>
+                </div>
+            </div>
+            <div class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="termsCheckbox" name="termsCheckbox" required>
+                <label class="form-check-label" for="termsCheckbox">I agree to the terms and conditions</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="button" class="btn btn-success" id="showDataBtn">Show Data</button>
+        </form>
+        <div class="mt-5">
+            <h3>Form Data</h3>
+            <table class="table table-bordered" id="formDataTable">
+                <!-- Form data will be displayed here -->
+            </table>
+        </div>
+    </div>
+    <script>
+        // Sample data for countries, states, and cities
+        var countries = ["India", "USA", "Canada", "Australia", "UK"];
+        var states = {
+            "India": ["Gujarat", "Rajasthan", "Punjab", "Karnataka", "Telangana"],
+            "USA": ["Alaska", "California", "New York", "Virginia", "Texas"],
+            "Canada": ["Ontario", "Alberta", "British Columbia", "Quebec", "Saskatchewan"],
+            "Australia": ["QueensLand", "Victoria", "New south Wales", "Western Australia", "Tasmania"],
+            "UK": ["Brimingham", "Bristol", "London", "Manchester", "Cambridge"],
+        };
+        var cities = {
+            "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Gandhinagar", "Rajkot"],
+            "Rajasthan": ["Jodhpur", "Jaipur", "Udaipur", "Bikaner", "Jaisalmer"],
+            "Punjab": ["Chandigarh", "Amritsar", "Ludhiana", "Jalandhar", "Patiala"],
+            "Karnataka": ["Bengaluru", "Mangaluru", "Hubballi", "Mysuru", "Udupi"],
+            "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Khammam", "Adilabad"],
+            "Alaska": ["Anchorage", "Juneau", "Ketchikan", "Fairbanks", "Seward"],
+            "California": ["Los Angeles", "San Diego", "San Francisco", "San Jose", "Fresno"],
+            "New York": ["Albany", "Rochester", "Syracuse", "Ithaca", "Saratoga Springs"],
+            "Virginia": ["Richmond", "Virginia Beach", "Alexandria", "Charlottesville",  "Williamsburg"],
+            "Texas": ["Austin", "Houston", "San Antonio", "Dallas", "Killeen"],
+            "Ontario": ["Torento", "Sudbury", "Ottawa", "Oakville", "Kingston"],
+            "Alberta": ["Calgary", "Edmonton", "Banff", "Red Deer", "ST. Albert"],
+            "British Columbia": ["Vancouver", "Victoria", "Richmond", "Squamish", "Prince George"],
+            "Quebec": ["Montreal", "Mont-Trimblant", "sherbrooke", "Levis", "Laval"],
+            "Saskatchewan": ["Regina", "Moose Jaw", "Estevan", "Yorkton", "North Battleford"],
+            "QueensLand": ["Bundaberg", "Mackay", "Brisbane", "Gold Coast", "Cairns"],
+            "Victoria": ["Melbourne", "Geelong", "Ballarat", "Mildura", "Castlemaine"],
+            "New south Wales": ["Sydney", "Cowan", "Blackheath", "Perisher", "Somersby"],
+            "Western Australia": ["Perth", "Fremantle", "Albany", "Geraldton", "Busselton"],
+            "Tasmania": ["Hobart", "Launceston", "Port Arthur", "Devonport ", "ST Helens"],
+            "Brimingham": ["Acocks Green", "Alum Rock", "Ashted", "Aston", "Austin Village"],
+            "Bristol": ["Redland", "Redcliffe", "Portishead", "Bedmister", "Knowle"],
+            "London": ["lslington", "Southwark", "Merton", "Camden", "Bromley"],
+            "Manchester": ["Chorlton", "Deansgate", "didsbury", "Rusholme", "Salford"],
+            "Cambridge": ["ST. Neots.", "ST. Lves", "Peterborough", "Ely", "Huntingdon"],
+        };
+
+        // Populate countries dropdown
+        var countryDropdown = document.getElementById("country");
+        countries.forEach(function (country) {
+            var option = document.createElement("option");
+            option.text = country;
+            countryDropdown.add(option);
+        });
+
+        // Update states dropdown based on selected country
+        document.getElementById("country").addEventListener("change", function () {
+            var selectedCountry = this.value;
+            var stateDropdown = document.getElementById("state");
+            stateDropdown.innerHTML = '<option selected disabled>Select State</option>';
+            var cityDropdown = document.getElementById("city");
+            cityDropdown.innerHTML = '<option selected disabled>Select City</option>';
+            if (selectedCountry in states) {
+                states[selectedCountry].forEach(function (state) {
+                    var option = document.createElement("option");
+                    option.text = state;
+                    stateDropdown.add(option);
+                });
+                stateDropdown.disabled = false;
+                cityDropdown.disabled = true;
+            } else {
+                stateDropdown.disabled = true;
+                cityDropdown.disabled = true;
+            }
+        });
+
+        // Update cities dropdown based on selected state
+        document.getElementById("state").addEventListener("change", function () {
+            var selectedState = this.value;
+            var cityDropdown = document.getElementById("city");
+            cityDropdown.innerHTML = '<option selected disabled>Select City</option>';
+            if (selectedState in cities) {
+                cities[selectedState].forEach(function (city) {
+                    var option = document.createElement("option");
+                    option.text = city;
+                    cityDropdown.add(option);
+                });
+                cityDropdown.disabled = false;
+            } else {
+                cityDropdown.disabled = true;
+            }
+        });
+
+
+        //form submittion and validation
+        $(document).ready(function () {
+            $('#registrationForm').submit(function (event) {
+                event.preventDefault();
+
+                var firstName = $('#firstName').val();
+                var lastName = $('#lastName').val();
+                var mobileNumber = $('#mobileNumber').val();
+                var password = $('#password').val();
+                var gender = $('input[name="gender"]:checked').val();
+                var country = $('#country').val();
+                var state = $('#state').val();
+                var city = $('#city').val();
+                var email = $('#email').val();
+                var termsCheckbox = $('#termsCheckbox').prop('checked');
+
+                // Regular expressions for validation
+                var nameRegex = /^[A-Za-z]+$/;
+                var mobileRegex = /^\d{10}$/;
+                var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+                // Validate first name
+                if (!nameRegex.test(firstName)) {
+                    alert("Invalid first name");
+                    return;
+                }
+
+                // Validate last name
+                if (!nameRegex.test(lastName)) {
+                    alert("Invalid last name");
+                    return;
+                }
+
+                // Validate mobile number
+                if (!mobileRegex.test(mobileNumber)) {
+                    alert("Invalid mobile number");
+                    return;
+                }
+
+                // Validate password
+                if (!passwordRegex.test(password)) {
+                    alert("Invalid password. Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one digit, and one special character.");
+                    return;
+                }
+
+                // Validate other fields (gender, country, state, city, and checkbox)
+                if (!gender || country === null || state === null || city === null || !termsCheckbox) {
+                    alert("Please fill out all fields and accept the terms and conditions");
+                    return;
+                }
+
+                // Save data to local storage
+                var formData = {
+                    firstName: firstName,
+                    lastName: lastName,
+                    mobileNumber: mobileNumber,
+                    email: email,
+                    gender: gender,
+                    country: country,
+                    state: state,
+                    city: city ,
+                    password: password
+                };
+
+                localStorage.setItem('formData', JSON.stringify(formData));
+                alert('Form submitted successfully! Data saved to local storage.');
+                 $('#registrationForm')[0].reset();
+            });
+        });
+       
+    </script>
+    <script>
+        // Show form data in table on button click
+        $('#showDataBtn').click(function () {
+           var formData = JSON.parse(localStorage.getItem('formData'));
+           if (formData) {
+               var tableBody = '';
+               tableBody += '<tr><td>First Name</td><td>' + formData.firstName + '</td></tr>';
+               tableBody += '<tr><td>Last Name</td><td>' + formData.lastName + '</td></tr>';
+               tableBody += '<tr><td>Mobile Number</td><td>' + formData.mobileNumber + '</td></tr>';
+               tableBody += '<tr><td>Password</td><td>' + formData.password + '</td></tr>';
+               tableBody += '<tr><td>email</td><td>' + formData.email + '</td></tr>';
+               tableBody += '<tr><td>Gender</td><td>' + formData.gender + '</td></tr>';
+               tableBody += '<tr><td>Country</td><td>' + formData.country + '</td></tr>';
+               tableBody += '<tr><td>State</td><td>' + formData.state + '</td></tr>';
+               tableBody += '<tr><td>City</td><td>' + formData.city + '</td></tr>';
+              
+               $('#formDataTable').html(tableBody);
+           }
+       });
+   </script>
+</body>
+
+</html>
+userData
