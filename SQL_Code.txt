@@ -1,0 +1,79 @@
+--------- sp of deleting program --------
+ALTER PROCEDURE [dbo].[DeleteData]
+    @Id INT
+AS
+BEGIN
+    DELETE FROM YourTable WHERE Id = @Id;
+END;
+
+-- Create stored procedure for insertion
+ALTER PROCEDURE [dbo].[InsertData]
+    @Id INT = NULL,
+    @Name NVARCHAR(255),
+    @Age INT
+AS
+BEGIN
+    INSERT INTO YourTable (Id, Name, Age) VALUES (@Id, @Name, @Age);
+END;
+
+-------- sp for retrievedata ------
+
+ALTER PROCEDURE [dbo].[RetrieveDataPaged]
+    @StartRow INT,
+    @PageSize INT
+AS
+BEGIN
+    SELECT TOP (@PageSize) *
+    FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY Id) AS RowNum, *
+        FROM YourTable
+    ) AS PaginatedTable
+    WHERE RowNum >= @StartRow
+    ORDER BY RowNum;
+END;
+
+-- Create stored procedure for updating Age
+ALTER PROCEDURE [dbo].[UpdateAge]
+    @Id INT,
+    @Age INT
+AS
+BEGIN
+    UPDATE YourTable
+    SET Age = @Age
+    WHERE Id = @Id;
+END;
+
+-- Create stored procedure for updating both Name and Age
+ALTER PROCEDURE [dbo].[UpdateBoth]
+    @Id INT,
+    @Name NVARCHAR(255),
+    @Age INT
+AS
+BEGIN
+    UPDATE YourTable
+    SET Name = @Name, Age = @Age
+    WHERE Id = @Id;
+END;
+
+-- Create stored procedure for updating data
+ALTER PROCEDURE [dbo].[UpdateData]
+    @Id INT,
+    @Name NVARCHAR(255),
+    @Age INT
+AS
+BEGIN
+    UPDATE YourTable
+    SET Name = @Name, Age = @Age
+    WHERE Id = @Id;
+END;
+
+-- Create stored procedure for updating Name
+ALTER PROCEDURE [dbo].[UpdateName]
+    @Id INT,
+    @Name NVARCHAR(255)
+AS
+BEGIN
+    UPDATE YourTable
+    SET Name = @Name
+    WHERE Id = @Id;
+END;

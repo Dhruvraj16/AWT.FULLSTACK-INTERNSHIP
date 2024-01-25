@@ -1,0 +1,298 @@
+using System;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace C_
+{
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            new Program().Demo();
+        }
+        public void Demo()
+        {
+            using ( 
+                     SqlConnection connection = new SqlConnection("data source=PC194-PC\\SQLEXPRESS; database=student; integrated security=SSPI")
+                 )
+            {
+                connection.Open();
+
+                ConsoleKeyInfo key;
+                do
+                {
+                    Console.WriteLine("Choose an action:");
+                    Console.WriteLine("1. Insert Data");
+                    Console.WriteLine("2. Update Data");
+                    Console.WriteLine("3. Retrieve Data");
+                    Console.WriteLine("4. Delete Data");
+                    Console.Write("Choose number to perform action: ");
+
+                    string choiceStr = Console.ReadLine();
+
+                    if (int.TryParse(choiceStr, out int choice))
+                    {
+                        switch (choice)
+                        {
+                            case 1:
+                                InsertData(connection);
+                                break;
+                            case 2:
+                                UpdateData(connection);
+                                break;
+                            case 3:
+                                RetrieveData(connection);
+                                break;
+                            case 4:
+                                DeleteData(connection);
+                                break;
+                            default:
+                                Console.WriteLine("Enter Appropriate number");
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Enter Appropriate number");
+                    }
+
+                    Console.WriteLine("Press any key to continue or 'Esc' to exit.");
+                    key = Console.ReadKey();
+                    Console.WriteLine(); 
+
+                } while (key.Key != ConsoleKey.Escape);
+            }
+        }
+
+        static void InsertData(SqlConnection connection)
+        {
+            Console.Write("Enter ID: ");
+            int id = int.Parse(Console.ReadLine());
+
+            // Check if the ID already exists in the table
+            if (IsIdExists(connection, id))
+            {
+                Console.WriteLine("This ID is already taken. Please choose a different ID.");
+                return;
+            }
+
+            Console.Write("Enter Name: ");
+            string name = Console.ReadLine();
+
+            Console.Write("Enter Age: ");
+            int age = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Data to be inserted:");
+            Console.WriteLine($"ID: {id}, Name: {name}, Age: {age}");
+
+            Console.Write("Press 'Y' to confirm and insert data, 'N' to cancel:");
+            ConsoleKeyInfo confirmKey = Console.ReadKey();
+
+            if (confirmKey.Key == ConsoleKey.Y)
+            {
+                using (SqlCommand command = new SqlCommand("InsertData", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.Parameters.AddWithValue("@Name", name);
+                    command.Parameters.AddWithValue("@Age", age);
+
+                    command.ExecuteNonQuery();
+                    Console.WriteLine("\nData inserted successfully!");
+                }
+            }
+            else if (confirmKey.Key == ConsoleKey.N)
+            {
+                Console.WriteLine("\nInsert operation canceled.");
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Insert operation canceled.");
+            }
+        }
+
+
+        static bool IsIdExists(SqlConnection connection, int id)
+        {
+            using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM YourTable WHERE Id = @Id", connection))
+            {
+                command.Parameters.AddWithValue("@Id", id);
+
+                int count = (int)command.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+
+
+        static void UpdateData(SqlConnection connection)
+        {
+            Console.Write("Enter Id to update: ");
+            int id = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Select fields to update:");
+            Console.WriteLine("1. Update Name");
+            Console.WriteLine("2. Update Age");
+            Console.WriteLine("3. Update Both");
+            Console.Write("Choose number to perform action: ");
+
+            int choice = int.Parse(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 1:
+                    Console.Write("Enter New Name: ");
+                    string newName = Console.ReadLine();
+                    UpdateName(connection, id, newName);
+                    break;
+                case 2:
+                    Console.Write("Enter New Age: ");
+                    int newAge = int.Parse(Console.ReadLine());
+                    UpdateAge(connection, id, newAge);
+                    break;
+                case 3:
+                    Console.Write("Enter New Name: ");
+                    string updatedName = Console.ReadLine();
+
+                    Console.Write("Enter New Age: ");
+                    int updatedAge = int.Parse(Console.ReadLine());
+
+                    UpdateBoth(connection, id, updatedName, updatedAge);
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice");
+                    break;
+            }
+        }
+
+        static void UpdateName(SqlConnection connection, int id, string updatedName)
+        {
+            using (SqlCommand command = new SqlCommand("UpdateName", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@Name", updatedName);
+
+                command.ExecuteNonQuery();
+                Console.WriteLine("Name updated successfully");
+            }
+        }
+
+        static void UpdateAge(SqlConnection connection, int id, int updatedAge)
+        {
+            using (SqlCommand command = new SqlCommand("UpdateAge", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@Age", updatedAge);
+
+                command.ExecuteNonQuery();
+                Console.WriteLine("Age updated successfully");
+            }
+        }
+
+        static void UpdateBoth(SqlConnection connection, int id, string updatedName, int updatedAge)
+        {
+            using (SqlCommand command = new SqlCommand("UpdateBoth", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@Name", updatedName);
+                command.Parameters.AddWithValue("@Age", updatedAge);
+
+                command.ExecuteNonQuery();
+                Console.WriteLine("Name and Age updated successfully");
+            }
+        }
+
+
+
+
+        static void RetrieveData(SqlConnection connection)
+        {
+            while (true)
+            {
+                Console.Write("Enter page size: ");
+                string pageSizeInput = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(pageSizeInput))
+                {
+                    // If the user presses Enter without entering a page size, exit the loop
+                    break;
+                }
+
+                if (int.TryParse(pageSizeInput, out int pageSize))
+                {
+                    // Calculate the starting row for the specified page
+                    int startRow = 1;
+
+                    // Check if there are records to retrieve
+                    int totalRecords = GetTotalRecords(connection);
+                    if (totalRecords == 0 || startRow > totalRecords)
+                    {
+                        Console.WriteLine("No More Data Found.");
+                        return;
+                    }
+
+                    do
+                    {
+                        using (SqlCommand command = new SqlCommand("RetrieveDataPaged", connection))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@StartRow", startRow);
+                            command.Parameters.AddWithValue("@PageSize", pageSize);
+
+                            using (SqlDataReader reader = command.ExecuteReader())
+                            {
+                                Console.WriteLine("Id\tName\tAge");
+                                while (reader.Read())
+                                {
+                                    Console.WriteLine($"{reader["Id"]}\t{reader["Name"]}\t{reader["Age"]}");
+                                }
+                            }
+                        }
+
+                        startRow += pageSize;
+
+                        Console.WriteLine("Press Enter to continue or 'Esc' to exit.");
+                    } while (Console.ReadKey().Key != ConsoleKey.Escape && startRow <= totalRecords);
+
+                    if (startRow > totalRecords)
+                    {
+                        Console.WriteLine("No More Data Found.");
+                        break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid page size. Please enter a valid number.");
+                }
+            }
+        }
+
+        static int GetTotalRecords(SqlConnection connection)
+        {
+            using (SqlCommand command = new SqlCommand("SELECT COUNT(*) FROM YourTable", connection))
+            {
+                return (int)command.ExecuteScalar();
+            }
+        }
+
+
+
+        static void DeleteData(SqlConnection connection)
+        {
+            Console.Write("Enter Id to delete: ");
+            int id = int.Parse(Console.ReadLine());
+
+            using (SqlCommand command = new SqlCommand("DeleteData", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@Id", id);
+
+                command.ExecuteNonQuery();
+                Console.WriteLine("Data deleted successfully");
+            }
+        }
+    }
+}
