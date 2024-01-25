@@ -1,0 +1,39 @@
+/*CREATE TABLE YourTable (
+    Id INT PRIMARY KEY,
+    Name NVARCHAR(255),
+    Age INT
+);*/
+
+-- Insert 30 values into YourTable
+/*INSERT INTO YourTable (Id, Name, Age)
+VALUES
+(1, 'John Doe', 25),
+(2, 'Jane Smith', 30),
+(3, 'Alice Johnson', 28),
+(4, 'Bob Williams', 35),
+(5, 'Eva Davis', 22),
+(6, 'Charlie Brown', 40),
+(7, 'Olivia White', 29),
+(8, 'Daniel Lee', 33),
+(9, 'Grace Miller', 26),
+(10, 'Henry Wilson', 31),
+(11, 'Sophia Harris', 27),
+(12, 'Andrew Moore', 36),
+(13, 'Lily Robinson', 24),
+(14, 'Michael Hall', 32),
+(15, 'Emma Turner', 23),
+(16, 'David Clark', 38),
+(17, 'Ava Jackson', 34),
+(18, 'William Baker', 29),
+(19, 'Zoe Adams', 25),
+(20, 'James Taylor', 37),
+(21, 'Madison Reed', 28),
+(22, 'Benjamin Scott', 33),
+(23, 'Chloe King', 26),
+(24, 'Joseph White', 39),
+(25, 'Avery Carter', 31),
+(26, 'Christopher Evans', 27),
+(27, 'Sophie Moore', 35),
+(28, 'Mason Turner', 30),
+(29, 'Isabella Robinson', 24),
+(30, 'Alexander Hall', 32);*/
